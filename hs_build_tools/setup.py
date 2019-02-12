@@ -102,7 +102,7 @@ def get_version_and_add_release_cmd(version_file, cmdclass_dict):
                 try:
                     tag = check_output(
                         [ 'git', 'describe', '--tags', '--exact-match']
-                    ).encode(locale.getpreferredencoding(False)).strip()
+                    ).decode(locale.getpreferredencoding(False)).strip()
                     version_ = f'v{version}'
                     print(f'version.txt={repr(version_)} git={repr(tag)}')
                     match = tag == version_
