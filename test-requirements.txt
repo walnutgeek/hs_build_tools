@@ -1,5 +1,0 @@
-sniffer
-coverage
-mypy
-twine
-wheel

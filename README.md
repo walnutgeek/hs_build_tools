@@ -2,7 +2,7 @@
 
 
 Tools to build, test and release hashstore and hashkernel. 
-Calendar versioning
+Calendar versioning.
 
 ### Installation
 

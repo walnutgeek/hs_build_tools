@@ -1,21 +1,35 @@
 from setuptools import setup, find_packages
-from setuptools.command.sdist import sdist
-from subprocess import check_call
-import os
-from hs_build_tools.setup import get_version_and_add_release_cmd
-
-
+import platform
 
 cmdclass_dict = {}
 
+install_requires = []
 
-# MANIFEST.in ensures that requirements are included in `sdist`
-install_requires = open('requirements.txt').read().split()
+dev_requires = [
+    'sniffer', 'coverage', 'mypy', 'twine',
+    'wheel', 'nose', 'pytest']
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
+makes_sniffer_scan_faster = {
+    "Linux": "pyinotify",
+    "Windows": "pywin32",
+    "Darwin": "MacFSEvents"
+}
 
-version = get_version_and_add_release_cmd('version.txt', cmdclass_dict)
+if platform.system() in makes_sniffer_scan_faster:
+    dev_requires.append(makes_sniffer_scan_faster[platform.system()])
+
+def read_file(f):
+    with open(f, "r") as fh:
+        return fh.read()
+
+long_description = read_file("README.md")
+
+try:
+    from hs_build_tools.setup import get_version_and_add_release_cmd
+    version = get_version_and_add_release_cmd('version.txt', cmdclass_dict)
+except ModuleNotFoundError:
+    version = read_file('version.txt').strip()
+
 
 setup(name='hs_build_tools',
       version=str(version),
@@ -39,4 +53,5 @@ setup(name='hs_build_tools',
       cmdclass=cmdclass_dict,
       entry_points={},
       install_requires=install_requires,
+      extras_require={'dev': dev_requires},
       zip_safe=True)

@@ -1,15 +1,20 @@
-from doctest import testmod
-from nose.tools import ok_, eq_
 from hs_build_tools.assert_text_template import build_assert_text
 
 
-def doctest_it(m):
-    results = testmod(m)
-    ok_(results.attempted > 0, 'There is not doctests in module')
-    eq_(results.failed, 0)
+def ok_(b, msg=None):
+    if msg is None:
+        assert b
+    else:
+        assert b , msg
+
+def eq_(a, b, msg=None):
+    if msg is None:
+        assert a == b
+    else:
+        assert a == b, msg
 
 
-assert_text = build_assert_text( ok_, eq_)
+assert_text = build_assert_text(ok_, eq_)
 
 
 def doctest_for_assert_text():
@@ -30,7 +35,7 @@ def doctest_for_assert_text():
     >>> assert_text('abc asdf iklmn xyz', ' abc ... xyz ')
     Traceback (most recent call last):
     ...
-    AssertionError: 'iklmn' != 'xyz'
+    AssertionError
     >>> assert_text('abc asdf iklmn xyz', ' abc .... xyz ')
     >>> save_vars = []
     >>> pattern = ' abc ... rrr ... xyz '
