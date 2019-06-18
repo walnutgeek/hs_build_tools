@@ -88,8 +88,8 @@ def get_version_and_add_release_cmd(version_file, cmdclass_dict):
 
         def azure_var(self, key, value):
             if self.azure:
-                print(
-                    f'##vso[task.setvariable variable={key};isOutput=true]{value}')
+                print(f'##vso[task.setvariable '
+                      f'variable={key};isOutput=true]{value}')
 
         def run(self):
             """Run command."""
@@ -104,7 +104,7 @@ def get_version_and_add_release_cmd(version_file, cmdclass_dict):
                         [ 'git', 'describe', '--tags', '--exact-match']
                     ).decode(locale.getpreferredencoding(False)).strip()
                     version_ = f'v{version}'
-                    print(f'version.txt={repr(version_)} git={repr(tag)}')
+                    print(f'version.txt={version_!r} git={tag!r}')
                     match = tag == version_
                 except CalledProcessError:
                     print(f'no tag found')

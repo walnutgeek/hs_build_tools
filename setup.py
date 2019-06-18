@@ -51,7 +51,9 @@ setup(name='hs_build_tools',
       packages=find_packages(exclude=("tests",)),
       package_data={},
       cmdclass=cmdclass_dict,
-      entry_points={},
+      entry_points={
+        'distutils.commands': ['runenv=hs_build_tools.runenv:RunEnv'],
+      },
       install_requires=install_requires,
       extras_require={'dev': dev_requires},
       zip_safe=True)
