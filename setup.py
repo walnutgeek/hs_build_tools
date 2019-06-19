@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 import platform
-from hs_build_tools.venv import RunEnv
+from hs_build_tools.runenv import RunEnv
 
 cmdclass_dict = {'runenv': RunEnv }
 

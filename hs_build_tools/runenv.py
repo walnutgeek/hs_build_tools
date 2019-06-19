@@ -3,7 +3,7 @@ import locale
 from setuptools import Command
 from venv import EnvBuilder
 from subprocess import check_output, check_call
-from os.path import exists
+from os.path import exists, sep
 
 
 class RunEnv(Command):
@@ -11,7 +11,7 @@ class RunEnv(Command):
             Build runtime venv for given project 
             and install it there.
             """
-    DEFAULT_DIR = './.runenv'
+    DEFAULT_DIR = f'.{sep}.runenv'
 
     user_options = [
         ('dir=', None, f"where to create runenv, default is: {DEFAULT_DIR}"),
