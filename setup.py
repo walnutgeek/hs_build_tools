@@ -1,13 +1,14 @@
 from setuptools import setup, find_packages
 import platform
+from hs_build_tools.venv import RunEnv
 
-cmdclass_dict = {}
+cmdclass_dict = {'runenv': RunEnv }
 
 install_requires = []
 
 dev_requires = [
     'sniffer', 'coverage', 'mypy', 'twine',
-    'wheel', 'nose', 'pytest']
+    'wheel', 'nose', 'pytest' ]
 
 makes_sniffer_scan_faster = {
     "Linux": "pyinotify",
@@ -52,7 +53,9 @@ setup(name='hs_build_tools',
       package_data={},
       cmdclass=cmdclass_dict,
       entry_points={
-        'distutils.commands': ['runenv=hs_build_tools.runenv:RunEnv'],
+        'distutils.commands': [
+            'runenv = hs_build_tools.runenv:RunEnv'
+        ],
       },
       install_requires=install_requires,
       extras_require={'dev': dev_requires},

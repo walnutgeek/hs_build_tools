@@ -5,6 +5,7 @@ from venv import EnvBuilder
 from subprocess import check_output, check_call
 from os.path import exists
 
+
 class RunEnv(Command):
     description = f"""
             Build runtime venv for given project 
@@ -13,7 +14,7 @@ class RunEnv(Command):
     DEFAULT_DIR = './.runenv'
 
     user_options = [
-        ('dir', None, f"where to create runenv, default is: {DEFAULT_DIR}"),
+        ('dir=', None, f"where to create runenv, default is: {DEFAULT_DIR}"),
     ]
 
     def initialize_options(self):
