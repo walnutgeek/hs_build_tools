@@ -28,7 +28,7 @@ class RunEnv(Command):
         """
         Execute command. Create runenv and install dependencies
         """
-        if not exists("release.py"):
+        if not exists("setup.py"):
             raise ValueError(f"Has to be run from root of the project")
         builder = EnvBuilder(system_site_packages=False, clear=False,
                              symlinks=False, with_pip=False)
