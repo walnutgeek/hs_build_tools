@@ -26,7 +26,7 @@ def read_file(f):
 long_description = read_file("README.md")
 
 try:
-    from hs_build_tools.setup import get_version_and_add_release_cmd
+    from hs_build_tools.release import get_version_and_add_release_cmd
     version = get_version_and_add_release_cmd('version.txt', cmdclass_dict)
 except ModuleNotFoundError:
     version = read_file('version.txt').strip()

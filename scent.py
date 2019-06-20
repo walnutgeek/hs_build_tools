@@ -15,7 +15,9 @@ run_envs = ['hb36', 'hb37']
 
 mypy_modules = ['hs_build_tools',
                 'hs_build_tools.pytest',
-                'hs_build_tools.nose']
+                'hs_build_tools.nose',
+                'hs_build_tools.runenv',
+                'hs_build_tools.release']
 
 
 def os_system_in_env(e,cmd):

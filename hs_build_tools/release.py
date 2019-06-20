@@ -5,6 +5,12 @@ from subprocess import check_output, CalledProcessError, check_call
 
 
 def next_month(d):
+    """
+    >>> next_month(date(2019,6,19))
+    datetime.date(2019, 7, 1)
+    >>> next_month(date(2019,12,19))
+    datetime.date(2020, 1, 1)
+    """
     cur_month = d.month
     while cur_month == d.month:
         d += timedelta(days=1)
@@ -12,6 +18,18 @@ def next_month(d):
 
 
 class Version:
+    """
+
+    >>> Version((2019, 7, 1)).next_minor(date(2019,6,19))
+    Version((2019, 7, 2))
+    >>> Version((2019, 7, 1)).next_major(date(2019,6,19))
+    Traceback (most recent call last):
+    ...
+    ValueError: cannot calc major version from: (2019, 7, 1) 2019-07-01
+    >>> Version((2019, 7, 1)).next_major(date(2019,7,1))
+    Version((2019, 8))
+
+    """
     def __init__(self, s):
         self.nums = s if isinstance(s, tuple) else tuple(map(int, s.split('.')))
         if len(self.nums) not in (2, 3):
@@ -39,9 +57,10 @@ class Version:
         last_num = 1
         if self.is_minor() :
             last_num = self.nums[2]
-        _nums = (now.year, now.month, last_num)
+        date_t = max(tuple(self.nums[:2]), (now.year, now.month))
+        _nums = (*date_t, last_num)
         if self.nums == _nums:
-            return Version((now.year, now.month, last_num + 1))
+            return Version((*date_t, last_num + 1))
         else:
             _nums = (now.year, now.month, 1)
             if _nums > self.nums:
