@@ -3,23 +3,22 @@ from distutils import dir_util
 from distutils.command.clean import clean as CleanCommand
 from pathlib import Path
 
+REMOVE_DIRS = set(
+    (
+        "dist",
+        "build",
+        ".mypy_cache",
+        ".pytest_cache",
+        "htmlcov",
+        "*.egg-info",
+        "**/__pycache__",
+    )
+)
+
+RUN_UTILS = ["isort -y", "black ."]
+
 
 class TidyCommand(CleanCommand):
-
-    REMOVE_DIRS = set(
-        (
-            "dist",
-            "build",
-            ".mypy_cache",
-            ".pytest_cache",
-            "htmlcov",
-            "*.egg-info",
-            "**/__pycache__",
-        )
-    )
-
-    RUN_UTILS = ["isort -y", "black ."]
-
     def initialize_options(self):
         CleanCommand.initialize_options(self)
 
@@ -31,7 +30,7 @@ class TidyCommand(CleanCommand):
         CleanCommand.run(self)
         curdir = Path(".")
         dir_names = set(
-            str(f) for p in self.REMOVE_DIRS for f in curdir.glob(p) if f.is_dir()
+            str(f) for p in REMOVE_DIRS for f in curdir.glob(p) if f.is_dir()
         )
 
         for dir_name in dir_names:
@@ -40,6 +39,6 @@ class TidyCommand(CleanCommand):
             else:
                 self.announce(f"skipping {dir_name} since it does not exist")
 
-        for cmd in self.RUN_UTILS:
+        for cmd in RUN_UTILS:
             if 0 != os.system(cmd):
                 self.announce(f"unsuccessful cmd: {cmd}")
