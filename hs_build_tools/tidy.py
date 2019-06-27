@@ -12,6 +12,7 @@ REMOVE_DIRS = set(
         "htmlcov",
         "*.egg-info",
         "**/__pycache__",
+        "**/.runenv",
     )
 )
 
