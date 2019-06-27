@@ -70,7 +70,7 @@ setup(
     entry_points={
         "distutils.commands": [
             "runenv = hs_build_tools.runenv:RunEnv",
-            "tidy = hs_build_tools.tydy:TidyCommand",
+            "tidy = hs_build_tools.tidy:TidyCommand",
         ]
     },
     install_requires=install_requires,
