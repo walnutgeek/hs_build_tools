@@ -5,7 +5,8 @@ def ok_(b, msg=None):
     if msg is None:
         assert b
     else:
-        assert b , msg
+        assert b, msg
+
 
 def eq_(a, b, msg=None):
     if msg is None:
@@ -18,7 +19,7 @@ assert_text = build_assert_text(ok_, eq_)
 
 
 def doctest_for_assert_text():
-    '''
+    """
     matches texts ignoring spaces.
 
     Some fragment of the `src` could be ignored if it is maked
@@ -43,5 +44,5 @@ def doctest_for_assert_text():
     >>> save_vars
     ['asdf', 'qqq']
 
-    '''
+    """
     ...

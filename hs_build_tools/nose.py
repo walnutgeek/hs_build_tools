@@ -1,19 +1,21 @@
 from doctest import testmod
-from nose.tools import ok_, eq_
+
+from nose.tools import eq_, ok_
+
 from hs_build_tools.assert_text_template import build_assert_text
 
 
 def doctest_it(m):
     results = testmod(m)
-    ok_(results.attempted > 0, 'There is not doctests in module')
+    ok_(results.attempted > 0, "There is not doctests in module")
     eq_(results.failed, 0)
 
 
-assert_text = build_assert_text( ok_, eq_)
+assert_text = build_assert_text(ok_, eq_)
 
 
 def doctest_for_assert_text():
-    '''
+    """
     matches texts ignoring spaces.
 
     Some fragment of the `src` could be ignored if it is maked
@@ -38,5 +40,5 @@ def doctest_for_assert_text():
     >>> save_vars
     ['asdf', 'qqq']
 
-    '''
+    """
     ...

@@ -1,7 +1,8 @@
 import locale
-from datetime import timedelta, date
+from datetime import date, timedelta
+from subprocess import CalledProcessError, check_call, check_output
+
 from setuptools import Command
-from subprocess import check_output, CalledProcessError, check_call
 
 
 def next_month(d):
@@ -30,16 +31,17 @@ class Version:
     Version((2019, 8))
 
     """
+
     def __init__(self, s):
-        self.nums = s if isinstance(s, tuple) else tuple(map(int, s.split('.')))
+        self.nums = s if isinstance(s, tuple) else tuple(map(int, s.split(".")))
         if len(self.nums) not in (2, 3):
-            raise ValueError(f'version has to have 2 or 3 parts: {s}')
+            raise ValueError(f"version has to have 2 or 3 parts: {s}")
 
     def __str__(self):
-        return '.'.join(map(str, self.nums))
+        return ".".join(map(str, self.nums))
 
     def __repr__(self):
-        return f'Version({self.nums})'
+        return f"Version({self.nums})"
 
     def next_major(self, now=date.today()):
         _nums = (now.year, now.month)
@@ -50,12 +52,11 @@ class Version:
             _nums = (now.year, now.month)
             if _nums > self.nums:
                 return Version(_nums)
-            raise ValueError(
-                f'cannot calc major version from: {self.nums} {now}')
+            raise ValueError(f"cannot calc major version from: {self.nums} {now}")
 
     def next_minor(self, now=date.today()):
         last_num = 1
-        if self.is_minor() :
+        if self.is_minor():
             last_num = self.nums[2]
         date_t = max(tuple(self.nums[:2]), (now.year, now.month))
         _nums = (*date_t, last_num)
@@ -69,8 +70,7 @@ class Version:
             _nums = (now.year, now.month, 1)
             if _nums > self.nums:
                 return Version(_nums)
-            raise ValueError(
-                f'cannot calc version from: {self.nums} {now}')
+            raise ValueError(f"cannot calc version from: {self.nums} {now}")
 
     def is_minor(self):
         return len(self.nums) == 3
@@ -94,9 +94,9 @@ def get_version_and_add_release_cmd(version_file, cmdclass_dict):
             """
 
         user_options = [
-            ('azure', None, "publish azure vars"),
-            ('minor', None, "trigger minor release "),
-            ('major', None, "trigger major release ")
+            ("azure", None, "publish azure vars"),
+            ("minor", None, "trigger minor release "),
+            ("major", None, "trigger major release "),
         ]
 
         def initialize_options(self):
@@ -107,8 +107,9 @@ def get_version_and_add_release_cmd(version_file, cmdclass_dict):
 
         def azure_var(self, key, value):
             if self.azure:
-                print(f'##vso[task.setvariable '
-                      f'variable={key};isOutput=true]{value}')
+                print(
+                    f"##vso[task.setvariable " f"variable={key};isOutput=true]{value}"
+                )
 
         def run(self):
             """Run command."""
@@ -119,30 +120,32 @@ def get_version_and_add_release_cmd(version_file, cmdclass_dict):
                 new_ver = version.next_minor()
             else:
                 try:
-                    tag = check_output(
-                        [ 'git', 'describe', '--tags', '--exact-match']
-                    ).decode(locale.getpreferredencoding(False)).strip()
-                    version_ = f'v{version}'
-                    print(f'version.txt={version_!r} git={tag!r}')
+                    tag = (
+                        check_output(["git", "describe", "--tags", "--exact-match"])
+                        .decode(locale.getpreferredencoding(False))
+                        .strip()
+                    )
+                    version_ = f"v{version}"
+                    print(f"version.txt={version_!r} git={tag!r}")
                     match = tag == version_
                 except CalledProcessError:
-                    print(f'no tag found')
+                    print(f"no tag found")
                     match = False
-                    self.azure_var('type', 'none')
+                    self.azure_var("type", "none")
                 if match:
-                    print(f'{version.type()} release. Git tag matched.')
-                    self.azure_var('type', version.type())
+                    print(f"{version.type()} release. Git tag matched.")
+                    self.azure_var("type", version.type())
                 raise SystemExit(0)
-            open(version_file, 'wt').write(str(new_ver))
-            print(f'New version: {new_ver}')
-            tag = f'v{new_ver}'
-            msg = ['-m', tag]
-            check_call(['git', 'add', version_file])
-            check_call(['git', 'commit', *msg])
-            check_call(['git', 'tag', '-a', tag, *msg])
+            open(version_file, "wt").write(str(new_ver))
+            print(f"New version: {new_ver}")
+            tag = f"v{new_ver}"
+            msg = ["-m", tag]
+            check_call(["git", "add", version_file])
+            check_call(["git", "commit", *msg])
+            check_call(["git", "tag", "-a", tag, *msg])
             # check_call(f'git push origin --tags'.split())
-            check_call('git push --tags origin HEAD'.split())
-            check_call('git push -u origin master'.split())
+            check_call("git push --tags origin HEAD".split())
+            check_call("git push -u origin master".split())
 
-    cmdclass_dict['release'] = ReleaseCommand
+    cmdclass_dict["release"] = ReleaseCommand
     return version
