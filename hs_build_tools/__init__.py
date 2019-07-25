@@ -23,18 +23,19 @@ def ensure_no_dir(dir):
                 break
 
 
-class TestOut:
+class LogTestOut:
     """
-    >>> log, out = TestOut.get(__name__)
+    Get logger and initalize `./test-out/py3.x.x/test_name` directory.
+
+    >>> log, out = LogTestOut.get(__name__)
     >>> log is not None
     True
-    >>> isinstance(out, TestOut)
+    >>> isinstance(out, LogTestOut)
     True
     >>> dir = out.child_dir("home")
     >>> os.path.isdir(dir)
     True
-    >>> log, out = TestOut.get(__name__) # force cleanup
-
+    >>> log, out = LogTestOut.get(__name__) # force cleanup
     """
     def __init__(self, name, root):
         self.log = getLogger(name)
