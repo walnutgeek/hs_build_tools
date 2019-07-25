@@ -16,7 +16,7 @@ def ensure_no_dir(dir):
     if os.path.isdir(dir):
         shutil.rmtree(dir)
         for i in range(6):
-            time.sleep(1e-3*(1<<i))
+            time.sleep(1e-3 * (1 << i))
             if os.path.isdir(dir):
                 shutil.rmtree(dir)
             else:
@@ -37,6 +37,7 @@ class LogTestOut:
     True
     >>> log, out = LogTestOut.get(__name__) # force cleanup
     """
+
     def __init__(self, name, root):
         self.log = getLogger(name)
         if root is None:
