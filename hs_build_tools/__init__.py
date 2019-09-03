@@ -12,13 +12,20 @@ def ensure_dir(d):
         os.makedirs(d)
 
 
+def blind_rmtree(dir):
+    try:
+        shutil.rmtree(dir)
+    except FileNotFoundError:
+        pass
+
+
 def ensure_no_dir(dir):
     if os.path.isdir(dir):
-        shutil.rmtree(dir)
+        blind_rmtree(dir)
         for i in range(6):
             time.sleep(1e-3 * (1 << i))
             if os.path.isdir(dir):
-                shutil.rmtree(dir)
+                blind_rmtree(dir)
             else:
                 break
 
