@@ -33,7 +33,7 @@ class PyzCommand(Command):
         check_call(["pip", "install", ".", "--target", self.dir])
         makedirs("dist", exist_ok=True)
         for ep in self.distribution.entry_points["console_scripts"]:
-            ep_name, ep_method = ep.split("=")
+            ep_name, ep_method = map(lambda s: s.strip(), ep.split("="))
             check_call(
                 [
                     "shiv",

@@ -20,6 +20,7 @@ mypy_modules = [
     "hs_build_tools",
     "hs_build_tools.pytest",
     "hs_build_tools.nose",
+    "hs_build_tools.pyz",
     "hs_build_tools.tidy",
     "hs_build_tools.runenv",
     "hs_build_tools.release",

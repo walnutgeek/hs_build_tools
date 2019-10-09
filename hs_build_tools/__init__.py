@@ -32,10 +32,12 @@ class LogTestOut:
     True
     >>> isinstance(out, LogTestOut)
     True
-    >>> dir = out.child_dir("home")
+    >>> dir = out.child_dir("home") # ensure child directory
     >>> os.path.isdir(dir)
     True
-    >>> log, out = LogTestOut.get(__name__) # force cleanup
+    >>> log, out = LogTestOut.get(__name__) # reinitialise and force cleanup
+    >>> os.path.isdir(dir)
+    False
     """
 
     def __init__(self, name, root):

@@ -2,10 +2,11 @@ import platform
 
 from setuptools import find_packages, setup
 
+from hs_build_tools.pyz import PyzCommand
 from hs_build_tools.runenv import RunEnv
 from hs_build_tools.tidy import TidyCommand
 
-cmdclass_dict = {"runenv": RunEnv, "tidy": TidyCommand}
+cmdclass_dict = {"runenv": RunEnv, "tidy": TidyCommand, "pyz": PyzCommand}
 
 install_requires = []
 
@@ -19,6 +20,7 @@ dev_requires = [
     "pytest",
     "isort",
     "black",
+    "shiv",
 ]
 
 makes_sniffer_scan_faster = {
@@ -71,6 +73,7 @@ setup(
         "distutils.commands": [
             "runenv = hs_build_tools.runenv:RunEnv",
             "tidy = hs_build_tools.tidy:TidyCommand",
+            "pyz = hs_build_tools.pyz:PyzCommand",
         ]
     },
     install_requires=install_requires,
