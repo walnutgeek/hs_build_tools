@@ -8,7 +8,7 @@ from hs_build_tools.tidy import TidyCommand
 
 cmdclass_dict = {"runenv": RunEnv, "tidy": TidyCommand, "pyz": PyzCommand}
 
-install_requires = []
+install_requires = ["shiv"]
 
 dev_requires = [
     "sniffer",
@@ -20,7 +20,6 @@ dev_requires = [
     "pytest",
     "isort",
     "black",
-    "shiv",
 ]
 
 makes_sniffer_scan_faster = {
