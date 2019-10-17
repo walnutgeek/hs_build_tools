@@ -40,9 +40,9 @@ class PyzCommand(Command):
         makedirs(self.target_dir(), exist_ok=True)
         check_call(["pip", "install", ".", "--target", self.target_dir()])
         makedirs(self.dir, exist_ok=True)
-        self.run_shiv(self.name, self.script)
+        self.run_shiv(self.script)
 
-    def run_shiv(self, ep_name, ep_method):
+    def run_shiv(self, ep_method):
         pyz_name = join(self.dir, self.name)
         check_call(
             [
@@ -55,5 +55,5 @@ class PyzCommand(Command):
                 ep_method,
             ]
         )
-        print(f"Created: {pyz_name} script entry point: {ep_method}")
+        print(f"Created: {pyz_name} with entry point: {ep_method}")
 
