@@ -16,13 +16,17 @@ class PyzCommand(Command):
     user_options = [
         ("dir=", None, f"where to create .pyz file, default is: {DEFAULT_DIR}"),
         ("name=", None, f"name of .pyz file, if omitted defaults to package name"),
-        ("script=", None, f"entry point used in .pyz file created, default is {DEFAULT_EP}")
+        (
+            "script=",
+            None,
+            f"entry point used in .pyz file created, default is {DEFAULT_EP}",
+        ),
     ]
 
     def initialize_options(self):
         self.dir = self.DEFAULT_DIR
         self.script = self.DEFAULT_EP
-        self.name = f'{self.distribution.get_name()}.pyz'
+        self.name = f"{self.distribution.get_name()}.pyz"
 
     def target_dir(self):
         return join(self.dir, "site_packages_for_pyz")
@@ -56,4 +60,3 @@ class PyzCommand(Command):
             ]
         )
         print(f"Created: {pyz_name} with entry point: {ep_method}")
-

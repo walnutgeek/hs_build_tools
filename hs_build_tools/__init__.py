@@ -9,12 +9,15 @@ pyenv = f"py{sys.version.split()[0]}"
 
 _POWOF2_MILLS = 4
 
-SEC_DELAYS = [1e-3 * (2 ** i) for i in range(_POWOF2_MILLS, _POWOF2_MILLS+3)]
+SEC_DELAYS = [1e-3 * (2 ** i) for i in range(_POWOF2_MILLS, _POWOF2_MILLS + 3)]
+
 
 def negate(fn):
-    def nope(*args,**kwargs):
+    def nope(*args, **kwargs):
         return not fn(*args, **kwargs)
+
     return nope
+
 
 def repeat_action_with_delays(test_fn, action_fn, *args):
     for delay in SEC_DELAYS:
@@ -24,6 +27,7 @@ def repeat_action_with_delays(test_fn, action_fn, *args):
             time.sleep(delay)
         else:
             break
+
 
 def ensure_dir(d):
     repeat_action_with_delays(negate(os.path.isdir), os.makedirs, d)
