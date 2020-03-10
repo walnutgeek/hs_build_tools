@@ -7,20 +7,30 @@ from logging import getLogger
 pyenv = f"py{sys.version.split()[0]}"
 
 
+_POWOF2_MILLS = 4
+
+SEC_DELAYS = [1e-3 * (2 ** i) for i in range(_POWOF2_MILLS, _POWOF2_MILLS+3)]
+
+def negate(fn):
+    def nope(*args,**kwargs):
+        return not fn(*args, **kwargs)
+    return nope
+
+def repeat_action_with_delays(test_fn, action_fn, *args):
+    for delay in SEC_DELAYS:
+        time.sleep(delay)
+        if test_fn(*args):
+            action_fn(*args)
+            time.sleep(delay)
+        else:
+            break
+
 def ensure_dir(d):
-    if not os.path.isdir(d):
-        os.makedirs(d)
+    repeat_action_with_delays(negate(os.path.isdir), os.makedirs, d)
 
 
 def ensure_no_dir(dir):
-    if os.path.isdir(dir):
-        shutil.rmtree(dir)
-        for i in range(6):
-            time.sleep(1e-3 * (1 << i))
-            if os.path.isdir(dir):
-                shutil.rmtree(dir)
-            else:
-                break
+    repeat_action_with_delays(os.path.isdir, shutil.rmtree, dir)
 
 
 class LogTestOut:
