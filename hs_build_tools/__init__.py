@@ -7,9 +7,7 @@ from logging import getLogger
 pyenv = f"py{sys.version.split()[0]}"
 
 
-_POWOF2_MILLS = 4
-
-SEC_DELAYS = [1e-3 * (2 ** i) for i in range(_POWOF2_MILLS, _POWOF2_MILLS + 3)]
+SEC_DELAYS = [0.05 * (1.4 ** i) for i in range(3)]
 
 
 def negate(fn):
