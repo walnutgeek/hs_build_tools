@@ -7,7 +7,7 @@ from logging import getLogger
 pyenv = f"py{sys.version.split()[0]}"
 
 
-SEC_DELAYS = [0.05 * (1.4 ** i) for i in range(3)]
+SEC_DELAYS = [0.0, *(0.05 * (1.4 ** i) for i in range(3))]
 
 
 def negate(fn):
@@ -19,7 +19,6 @@ def negate(fn):
 
 def repeat_action_with_delays(test_fn, action_fn, *args):
     for delay in SEC_DELAYS:
-        time.sleep(delay)
         if test_fn(*args):
             action_fn(*args)
             time.sleep(delay)
