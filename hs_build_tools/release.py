@@ -145,7 +145,7 @@ def get_version_and_add_release_cmd(version_file, cmdclass_dict):
             check_call(["git", "tag", "-a", tag, *msg])
             # check_call(f'git push origin --tags'.split())
             check_call("git push --tags origin HEAD".split())
-            check_call("git push -u origin master".split())
+            check_call("git push -u origin".split())
 
     cmdclass_dict["release"] = ReleaseCommand
     return version
