@@ -3,20 +3,18 @@ from distutils import dir_util
 from distutils.command.clean import clean as CleanCommand
 from pathlib import Path
 
-REMOVE_DIRS = set(
-    (
-        "dist",
-        "build",
-        ".mypy_cache",
-        ".pytest_cache",
-        "htmlcov",
-        "*.egg-info",
-        "**/__pycache__",
-        "**/.runenv",
-    )
-)
+REMOVE_DIRS = {
+    "dist",
+    "build",
+    ".mypy_cache",
+    ".pytest_cache",
+    "htmlcov",
+    "*.egg-info",
+    "**/__pycache__",
+    "**/.runenv",
+}
 
-RUN_UTILS = ["isort -y", "black ."]
+RUN_UTILS = ["isort .", "black ."]
 
 
 class TidyCommand(CleanCommand):
