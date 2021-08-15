@@ -2,6 +2,7 @@ import os.path
 from distutils import dir_util
 from distutils.command.clean import clean as CleanCommand
 from pathlib import Path
+from typing import Set
 
 REMOVE_DIRS = {
     "dist",
@@ -13,6 +14,9 @@ REMOVE_DIRS = {
     "**/__pycache__",
     "**/.runenv",
 }
+
+REMOVE_FILES = {".coverage*"}
+EXCLUDE_FILES = {".coveragerc"}
 
 RUN_UTILS = ["isort .", "black ."]
 
@@ -31,6 +35,19 @@ class TidyCommand(CleanCommand):
         dir_names = set(
             str(f) for p in REMOVE_DIRS for f in curdir.glob(p) if f.is_dir()
         )
+
+        files: Set[Path] = set(
+            f
+            for p in REMOVE_FILES
+            for f in curdir.glob(p)
+            if not f.is_dir() and f.name not in EXCLUDE_FILES
+        )
+
+        for f in files:
+            if f.exists():
+                f.unlink()
+            else:
+                self.announce(f"skipping {f} since it does not exist")
 
         for dir_name in dir_names:
             if os.path.exists(dir_name):
